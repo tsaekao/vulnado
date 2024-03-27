@@ -41,7 +41,7 @@ steps:
   inputs:
     VeracodeAPIID: '$(vid)'
     VeracodeAPIsecret: '$(vkey)'
-    fileToScan: 'target/*.jar'
+    fileToScan: 'target/vulnado-0.0.1-SNAPSHOT.jar'
 
 - task: Veracode@3
   displayName: Upload & Scan
