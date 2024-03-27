@@ -37,11 +37,11 @@ steps:
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
 - task: VeracodePipelineScan@0
-  enabled: false
+  enabled: true
   inputs:
     VeracodeAPIID: '$(vid)'
     VeracodeAPIsecret: '$(vkey)'
-    fileToScan: '$(Build.ArtifactStagingDirectory)/*.war'
+    fileToScan: '$(Build.ArtifactStagingDirectory)/*.jar'
 
 - task: Veracode@3
   displayName: Upload & Scan
