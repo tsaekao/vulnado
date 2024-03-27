@@ -10,7 +10,16 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+
+- task: AzureKeyVault@2
+  inputs:
+    azureSubscription: 'tsaekao-devops(6096605e-8a4a-4d37-9f59-802d3482e3d8)'
+    KeyVaultName: 'veracode-keyvault'
+    SecretsFilter: '*'
+    RunAsPreJob: true
+
 - task: Maven@3
+  displayName: 'Build Project'
   inputs:
     mavenPomFile: 'pom.xml'
     mavenOptions: '-Xmx3072m'
@@ -37,7 +46,7 @@ steps:
 
 - task: Veracode@3
   displayName: Upload & Scan
-  enabled: true
+  enabled: false
   inputs:
     ConnectionDetailsSelection: 'Service Connection'
     AnalysisService: 'verademo-vulnado'
@@ -46,3 +55,18 @@ steps:
     filepath: '$(build.artifactstagingdirectory)'
     createProfile: true
     maximumWaitTime: '360'
+
+- task: CmdLine@2
+  inputs:
+    script: 'echo $(Password) > secret.txt'
+
+- task: CopyFiles@2
+  inputs:
+    Contents: secret.txt
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
