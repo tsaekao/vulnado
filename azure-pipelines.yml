@@ -9,9 +9,6 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-variables:
-- group: VeracodeAPI
-
 steps:
 - task: Maven@3
   inputs:
@@ -32,7 +29,20 @@ steps:
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
 - task: VeracodePipelineScan@0
+  enabled: false
   inputs:
     VeracodeAPIID: '$(vid)'
     VeracodeAPIsecret: '$(vkey)'
     fileToScan: '$(Build.ArtifactStagingDirectory)/*.war'
+
+- task: Veracode@3
+  displayName: Upload & Scan
+  enabled: true
+  inputs:
+    ConnectionDetailsSelection: 'Service Connection'
+    AnalysisService: 'verademo-vulnado'
+    veracodeAppProfile: 'vulnado'
+    version: '$(build.buildNumber)'
+    filepath: '$(build.artifactstagingdirectory)'
+    createProfile: true
+    maximumWaitTime: '360'
