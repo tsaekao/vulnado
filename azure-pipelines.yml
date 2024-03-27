@@ -41,7 +41,7 @@ steps:
   inputs:
     VeracodeAPIID: '$(vid)'
     VeracodeAPIsecret: '$(vkey)'
-    fileToScan: '$(Build.ArtifactStagingDirectory)/*.jar'
+    fileToScan: 'target/*.jar'
 
 - task: Veracode@3
   displayName: Upload & Scan
