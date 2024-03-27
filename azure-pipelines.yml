@@ -10,14 +10,12 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-
 - task: AzureKeyVault@2
   inputs:
     azureSubscription: 'tsaekao-devops(6096605e-8a4a-4d37-9f59-802d3482e3d8)'
     KeyVaultName: 'veracode-keyvault'
     SecretsFilter: '*'
     RunAsPreJob: true
-
 - task: Maven@3
   displayName: 'Build Project'
   inputs:
